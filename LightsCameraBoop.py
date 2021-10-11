@@ -24,16 +24,16 @@ bl_info = {
     "name": "Lights, Camera, *boop*",
     "description": "Exports light and camera data to a JSON file.",
     "author": "Cailín Walsh",
-    "version": (1, 0),
+    "version": (1, 1),
     "blender": (2, 80, 0),
     "location": "File > Export",
     "category": "Import-Export"
 }
 
 # auto-formats a JSON property for us
+
 def write_json_property(key, value):
     output = "\"{}\": ".format(key)
-
     if isinstance(value, list) or isinstance(value, (mathutils.Vector, mathutils.Color, mathutils.Euler)):
         output += "[ "
         for index, v in enumerate(value):
@@ -88,8 +88,7 @@ def write_some_data(context, filepath):
         if obj.type == 'CAMERA':
             cameras.append(obj)
     f.write("\t\"cameras\": [\n")
-    for index, obj in enumerate(bpy.data.objects):
-        if obj.type == 'CAMERA':
+    for index, obj in enumerate(cameras):
             f.write("\t\t{\n")
             f.write("\t\t\t%s,\n" % write_json_property("type", obj.data.type))
             f.write("\t\t\t%s,\n" % write_json_property("location", obj.location))
